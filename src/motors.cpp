@@ -2,57 +2,14 @@
 #include "motors.hpp"
 #include "def.hpp"
 
-// Motor groups for LemLib (using port numbers)
-// Negative ports indicate reversed motors
 pros::MotorGroup left_motors({-15, -14, -13});  // Front, Middle, Back
 pros::MotorGroup right_motors({16, 17, 18});    // Front, Middle, Back
-
-// Intake and output motors
-pros::Motor intakeMotor(9, pros::v5::MotorGears::green);
-pros::Motor midMotor(10, pros::v5::MotorGears::blue);
-pros::Motor outputRoller(1, pros::v5::MotorGears::blue);
-
-// Pneumatics
-pros::adi::DigitalOut pistonA('A'); // match loader
-pros::adi::DigitalOut pistonB('B');
-bool pistonAState(false);
-bool pistonBState(false);
-
 
 // MCL distance sensors 
 pros::Distance dist_east(6);
 pros::Distance dist_north(4);
 pros::Distance dist_south(5);
 pros::Distance dist_west(3);
-
-// Intake functions (combined motor)
-void intakeForward(void) {
-    intakeMotor.move(127);
-    midMotor.move(-127);
-}
-
-void intakeStop(void) {
-    intakeMotor.move(0);
-    midMotor.move(0);
-}
-
-void intakeBackward(void) {
-    intakeMotor.move(-127);
-    midMotor.move(127);
-}
-
-// Output functions
-void outputForward(void) {
-    outputRoller.move(127);
-}
-
-void outputStop(void) {
-    outputRoller.move(0);
-}
-
-void outputBackward(void) {
-    outputRoller.move(-127);
-}
 
 // Controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -114,14 +71,3 @@ int clamp(int value, int min, int max) {
     if (value > max) return max;
     return value;
 }
-
-void togglePistonA(void) {
-    pistonAState = !pistonAState;
-    pistonA.set_value(pistonAState);
-}
-
-void togglePistonB(void) {
-    pistonBState = !pistonBState;
-    pistonB.set_value(pistonBState);
-}
-
