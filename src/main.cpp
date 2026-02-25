@@ -195,7 +195,6 @@ void initialize(void) {
     chassis.setPose(0, 0, 0);
     togglePistonB();
 
-    /** MCL
     // initialize mcl with all four distance sensors
     // starting pose assumes robot begins at field center facing forward
     // adjust start_x, start_y, start_theta to match your actual starting position
@@ -231,8 +230,7 @@ void initialize(void) {
             pros::delay(50);
         }
     });
-    */
-
+    
     // run the auton selector
 CheckScreen:
     if (pros::c::lcd_is_initialized()) {
@@ -276,46 +274,4 @@ void autonomous(void) {
 void disabled(void) {}
 void competition_initialize(void) {}
 
-void opcontrol(void) {
-    pros::screen::erase();
-    pros::screen::set_pen(pros::c::COLOR_WHITE);
-    pros::screen::print(pros::text_format_e_t::E_TEXT_LARGE_CENTER, SCREEN_WIDTH / 2, 80, "OP-CONTROL");
-    pros::screen::print(pros::text_format_e_t::E_TEXT_LARGE_CENTER, SCREEN_WIDTH / 2, 20, "TIKKKKK!");
-
-    // make sure pistons start retracted
-    pistonA.set_value(false);
-    pistonB.set_value(false);
-
-    // button state tracking for toggles
-    bool buttonUpPressed = false;
-    bool buttonXPressed  = false;
-
-    while (true) {
-        // arcade drive using left stick Y and right stick X
-        int dir_move = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int dir_turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        chassis.arcade(dir_move, dir_turn);
-
-        // intake controls: R1 forward, L1 backward
-        if      (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) intakeForward();
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) intakeBackward();
-        else                                                              intakeStop();
-
-        // output controls: R2 forward, L2 backward
-        if      (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) outputForward();
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) outputBackward();
-        else                                                              outputStop();
-
-        // piston A toggle on UP button
-        bool buttonUpCurrent = controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP);
-        if (buttonUpCurrent && !buttonUpPressed) togglePistonA();
-        buttonUpPressed = buttonUpCurrent;
-
-        // piston B toggle on X button
-        bool buttonXCurrent = controller.get_digital(pros::E_CONTROLLER_DIGITAL_X);
-        if (buttonXCurrent && !buttonXPressed) togglePistonB();
-        buttonXPressed = buttonXCurrent;
-
-        pros::delay(10);
-    }
-}
+void opcontrol(void) {}
